@@ -41,14 +41,25 @@ def tambah_barang():
 def tampilkan_barang():
     if not gudang:
         print("Gudang kosong. Tidak ada barang yang tersedia.")
-    else:
-        data_barang = []
-        for kode, barang in gudang.items():
-            data_barang.append([kode, barang['nama'], barang['merk'], barang['jumlah'], barang['harga']])
+        return
 
-        print("\nDaftar Barang di Gudang:")
+    data_barang = []
+    for kode, barang in gudang.items():
+        data_barang.append([kode, barang['nama'], barang['merk'], barang['jumlah'], barang['harga']])
+
+    print("\nDaftar Barang di Gudang:")
+    table_headers = ["Kode Barang", "Nama Barang", "Merk Barang", "Jumlah Barang", "Harga Barang"]
+    print(tabulate(data_barang, headers=table_headers, tablefmt="grid"))
+
+# menampilkan barang berdasarkan kode
+def tampilkan_barang_berdasarkan_kode(kode):
+    if kode in gudang:
+        data_barang = [[kode, gudang[kode]['nama'], gudang[kode]['merk'], gudang[kode]['jumlah'], gudang[kode]['harga']]]
         table_headers = ["Kode Barang", "Nama Barang", "Merk Barang", "Jumlah Barang", "Harga Barang"]
+        print("\nBarang dengan Kode Barang", kode)
         print(tabulate(data_barang, headers=table_headers, tablefmt="grid"))
+    else:
+        print(f"Tidak ada barang dengan Kode Barang {kode} di gudang.")
 
 # menampilkan
 def tampilkan_barang():
@@ -127,7 +138,7 @@ def hapus_barang():
 
 # Menu utama
 while True:
-    print("\n===== Aplikasi Manajemen Gudang Elektronik =====")
+    print("\n===== Aplikasi Manajemen Gudang =====")
     print("1. Tambah Barang")
     print("2. Tampilkan Barang")
     print("3. Ubah Barang")
@@ -137,9 +148,19 @@ while True:
     pilihan = input("Pilih menu: ")
 
     if pilihan == '1':
-        tampilkan_barang()
-    elif pilihan == '2':
         tambah_barang()
+    elif pilihan == '2':
+        print("\nMenu Tampilkan Barang:")
+        print("1. Tampilkan Semua Barang di Gudang")
+        print("2. Cari Barang berdasarkan Kode Barang")
+        submenu_pilihan = input("Pilih submenu: ")
+        if submenu_pilihan == '1':
+            tampilkan_barang()
+        elif submenu_pilihan == '2':
+            kode_cari = input("Masukkan Kode Barang yang ingin dicari: ")
+            tampilkan_barang_berdasarkan_kode(kode_cari)
+        else:
+            print("Pilihan submenu tidak valid.")
     elif pilihan == '3':
         ubah_barang()
     elif pilihan == '4':
